@@ -2,7 +2,7 @@ cla;clc;clear;
 P = 15;
 N = 2;
 [xi, S] = generate_data(P, N);
-w = train(xi, S, 1000);
+[w stop] = train(xi, S, 100);
 
 %% plotting
 
@@ -27,3 +27,24 @@ xlim = get(gca,'XLim');
 % m = h(2)/h(1);
 m = h(1)/h(2);
 line([xlim(1), xlim(2)], [m*xlim(1), m*xlim(2)]);
+
+%% (D)
+cla;clc;clear;
+N = 20;
+nMax = 50;
+Qs = [];
+for alpha = 0.75:0.25:3
+    P = alpha*N;
+    Q = 0;
+    for n = 1:nMax
+        [xi, S] = generate_data(P, N);
+        [w, success] = train(xi, S, 100);
+        Q = Q + success;
+    end
+    Qs = [Qs Q/nMax];
+end
+
+%% Plotting
+
+plot(0.75:0.25:3, Qs);
+pbaspect([1, 1, 1]);

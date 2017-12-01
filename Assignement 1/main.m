@@ -30,22 +30,26 @@ line([0 w(1)], [0 w(2)], 'Color', 'red');
 
 %% (D)
 cla;clc;clear;
-N = 20;
+N = 10;
 nMax = 50;
 Qs = [];
-for alpha = 0.75:0.25:3
-    P = alpha*N;
+Nd = 300;
+for alpha = 1:.1:3
+    P = floor(alpha*N); %Make sure by 'hand' that it'll actually be an integer
     Q = 0;
-    for n = 1:nMax
+    for nd = 1:Nd
         [xi, S] = generate_data(P, N);
-        [w, success] = train(xi, S, 100);
+        [w, success] = train(xi, S, nMax);
         Q = Q + success;
     end
-    Qs = [Qs Q/nMax];
+    
+    Qs = [Qs Q/Nd]
 end
+%%
+plot(1:.1:3, Qs);
+line([2 2], [0 1], 'Color', 'black');
+axis([0 3 0 1]);
 
-%% Plotting
-
-plot(0.75:0.25:3, Qs);
-pbaspect([1, 1, 1]);
+axis square;
+% pbaspect([1, 1, 1]);
 axis([0.5 3 -0.1 1.1])

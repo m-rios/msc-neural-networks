@@ -1,5 +1,5 @@
 cla;clc;clear;
-P = 15;
+P = 2;
 N = 2;
 [xi, S] = generate_data(P, N);
 [w stop] = train(xi, S, 100);
@@ -24,9 +24,9 @@ h = null(w(:).')
 
 % plot h
 xlim = get(gca,'XLim');
-% m = h(2)/h(1);
-m = h(1)/h(2);
+m = h(2)/h(1);
 line([xlim(1), xlim(2)], [m*xlim(1), m*xlim(2)]);
+line([0 w(1)], [0 w(2)], 'Color', 'red');
 
 %% (D)
 cla;clc;clear;
@@ -48,3 +48,4 @@ end
 
 plot(0.75:0.25:3, Qs);
 pbaspect([1, 1, 1]);
+axis([0.5 3 -0.1 1.1])

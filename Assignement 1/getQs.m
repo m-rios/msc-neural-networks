@@ -1,11 +1,11 @@
-function [ Qs ] = getQs( in_alpha, N, Nd, nMax )
+function [ Qs ] = getQs( in_alpha, N, Nd, nMax, c )
     Qs = [];
     for alpha = in_alpha
         P = floor(alpha*N); %Make sure by 'hand' that it'll actually be an integer
         Q = 0;
         for nd = 1:Nd
             [xi, S] = generate_data(P, N);
-            [w, success] = train(xi, S, nMax);
+            [w, success] = train(xi, S, nMax, c);
             Q = Q + success;
         end
         Qs = [Qs Q/Nd];

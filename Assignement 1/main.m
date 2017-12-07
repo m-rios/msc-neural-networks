@@ -8,23 +8,23 @@ aQs = zeros(1,size(alpha,2));
 bQs = zeros(1,size(alpha,2));
 cQs = zeros(1,size(alpha,2));
 dQs = zeros(1,size(alpha,2));
-load('nmax-1500');
+load('incremental-nmax');
 %% e) + a)
-thQs = theoreticQs(alpha, N);
-aQs = getQs(alpha, N, nD, nMax, 0);
+thQs = theoreticQs(alpha, 44);
+aQs = getQs(alpha, 40, nD, 1000, 0);
 %% b)
-bQs = getQs(alpha, N, nD, nMax, 0.025);
+bQs = getQs(alpha, 60, nD, 1500, 0);
 %% c)
-cQs = getQs(alpha, N, nD, nMax, 0.05);
+% cQs = getQs(alpha, N, nD, nMax, 0);
 %% d)
-dQs = getQs(alpha, N, nD, nMax, 0.1);
+% dQs = getQs(alpha, N, nD, nMax, 0);
 %% Plot
 cla;
 hold on;
-line(alpha, bQs, 'Color', 'green', 'DisplayName', 'nMax=100', 'MarkerFaceColor', 'green', 'Marker', 'd');
-line(alpha, cQs, 'Color', 'blue', 'DisplayName', 'nMax=500', 'MarkerFaceColor', 'blue', 'Marker', 'V');
-line(alpha, aQs, 'Color', 'red', 'DisplayName', 'nMax=1500', 'MarkerFaceColor', 'red', 'Marker', 'o');
-line(alpha, dQs, 'Color', 'magent', 'DisplayName', 'N = 200 nMax=600', 'MarkerFaceColor', 'magent', 'Marker', 's');
+line(alpha, bQs, 'Color', 'green', 'DisplayName', 'N=60 nMax=1500', 'MarkerFaceColor', 'green', 'Marker', 'd');
+line(alpha, cQs, 'Color', 'blue', 'DisplayName', 'N = 20 nMax=500', 'MarkerFaceColor', 'blue', 'Marker', 'V');
+line(alpha, aQs, 'Color', 'red', 'DisplayName', 'N= 40 nMax=1000', 'MarkerFaceColor', 'red', 'Marker', 'o');
+% line(alpha, dQs, 'Color', 'magent', 'DisplayName', 'N = 200 nMax=600', 'MarkerFaceColor', 'magent', 'Marker', 's');
 line(alpha, thQs, 'Color', 'black', 'DisplayName', 'theoretical');
 grid on;
 legend('show');

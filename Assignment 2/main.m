@@ -2,8 +2,8 @@ clear; clc;
 rng('default')
 rng(1) %set the seed
 
-N = 16;
-nd = 10;
+N = 20;
+nd = 40;
 tmax = 1000;
 
 %% Plot

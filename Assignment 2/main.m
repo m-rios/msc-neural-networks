@@ -1,27 +1,68 @@
 clear; clc;
-rng('default')
-rng(1) %set the seed
+% rng('default')
+% rng(1) %set the seed
 
 N = 20;
-nd = 40;
+nd = 100;
 tmax = 1000;
 
-%% Plot
-A = 0.25:0.25:3
-error = zeros(length(A),1);
-a = 1
-for alpha = A
-    P = floor(N * alpha);
+inc = 0.2;
+from = 0.2;
+to = 5;
+A = from:inc:to;
+
+%% Minover
+% errorMinover = zeros(length(A),1);
+% kappa_incs = zeros(length(A),tmax*floor(N * A(length(A))));
+% parfor a = 1:length(A)
+%     P = floor(N * A(a));
+%     for i = 1:nd
+%         xi = randn(N, P);
+%         teacher = ones(N,1);
+%         S = sign(teacher'*xi)';
+%         [w, k, ks] = minover(xi, S, tmax);
+%         errorMinover(a) = errorMinover(a) + generalization_error(teacher, w);
+%         ks(tmax*floor(N * A(length(A)))) = 0;
+%         kappa_incs(a,:) = kappa_incs(a,:) + ks;
+%     end
+% end
+% 
+% errorMinover = errorMinover/nd;
+% kappa_incs = kappa_incs/nd;
+% 
+% save(['Minover N-' num2str(N) '-nd-' num2str(nd) '-tmax-' num2str(tmax) '-alpha-' num2str(from) ':' num2str(inc) ':' num2str(to) '.mat'], 'N', 'A', 'nd', 'tmax', 'errorMinover', 'kappa_incs');
+
+
+%% Rosenblatt
+
+rosen_stop = zeros(length(A), 1);
+
+errorRosen = zeros(length(A),1);
+parfor a = 1:length(A)
+    P = floor(N * A(a));
     for i = 1:nd
         xi = randn(N, P);
         teacher = ones(N,1);
         S = sign(teacher'*xi)';
-        w = minover(xi, S, tmax);
-        error(a) = error(a) + generalization_error(teacher, w);
+        [w, stop] = train(xi, S, tmax, 0)
+        rosen_stop(a) = rosen_stop(a) + stop;
+        errorRosen(a) = errorRosen(a) + generalization_error(teacher, w);
     end
-    a = a + 1;
 end
 
-error = error/nd;
+rosen_stop = rosen_stop/nd;
+errorRosen = errorRosen/nd;
 
-plot(alpha, error);
+save(['Rosenblatt N-' num2str(N) '-nd-' num2str(nd) '-tmax-' num2str(tmax) '-alpha-' num2str(from) ':' num2str(inc) ':' num2str(to) '.mat'], 'N', 'A', 'nd', 'tmax', 'errorRosen', 'rosen_stop');
+
+%% Plot
+
+figure, hold on;
+plot(A, errorMinover, 'Marker', 'o', 'MarkerFaceColor', 'r', 'Color', 'r', 'DisplayName', ['Minover N:' num2str(N) ' nd:' num2str(nd) 'tmax:' num2str(tmax)]);
+plot(A, errorRosen, 'Marker', 'o', 'MarkerFaceColor', 'g', 'Color', 'g', 'DisplayName', ['Rosenblatt N:' num2str(N) ' nd:' num2str(nd) 'tmax:' num2str(tmax)]);
+legend('show');
+grid on;
+xlabel('P/N');
+ylabel('generalization error');
+title('Generalization error as function of \alpha');
+

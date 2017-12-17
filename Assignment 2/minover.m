@@ -1,4 +1,5 @@
-function [ w, kappa ] = minover( xi, S, nmax)
+function [ w, kappa, kappa_incs ] = minover( xi, S, nmax)
+    kappa_incs = zeros(1,nmax*length(S));
     kappa = inf;
 %     w = zeros(size(xi,1),1);
     w = xi(:,1)*S(1)/size(xi,1);
@@ -7,6 +8,7 @@ function [ w, kappa ] = minover( xi, S, nmax)
 %         if round((kappa - kappa_new)*th) == 0
 %             break
 %         end
+        kappa_incs(t) = kappa - kappa_new;
         if kappa - kappa_new == 0
             break
         end

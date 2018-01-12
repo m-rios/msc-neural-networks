@@ -7,16 +7,17 @@ or_S = grp2idx(species);
 or_S(or_S==2) = -1;
 or_S(or_S==3) = -1;
 
+% shuffle original data to get training and testing sets
 r = randperm(length(or_S));
-
 xi = or_xi(:,r);
 S = or_S(r);
 
-
+% train on subset
 w = minover(xi(:,1:floor(length(xi)*0.8)), S(1:floor(length(S)*0.8)), 1000);
 
 hit = 0;
 
+% test
 parfor i = floor(length(xi)*0.8)+1:length(xi)
     hit = hit + (sign(dot(w,xi(:,i))) == S(i));
 end
